@@ -45,7 +45,7 @@ public class TestCreateTableFromSheet {
 //        dbName = dbName.substring(0, dbName.lastIndexOf("."));
 
         String excelURL = ExcelDBDriver.URL_PREFIX  + dbName;
-        System.out.println("movesDB URL: " + excelURL);
+        System.out.println("UCanExcel URL: " + excelURL);
         Connection connection = DriverManager.getConnection(excelURL);
 
         Statement statement = connection.createStatement();

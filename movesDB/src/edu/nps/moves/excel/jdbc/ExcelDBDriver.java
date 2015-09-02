@@ -33,9 +33,8 @@ public class ExcelDBDriver implements Driver {
 
     public static final List<String> newExtensions
             = Arrays.asList(new String[]{"xlsx", "xlsm"});
-
+    
     private static final String HSQLDB_PREFIX_MEM = "jdbc:hsqldb:mem:";
-    private static final String HSQLDB_PREFIX_FILE = "jdbc:hsqldb:file:";
 
     public static final String URL_PREFIX = "jdbc:excel:";
     public static final boolean JDBC_COMPLIANT = false;
@@ -54,15 +53,6 @@ public class ExcelDBDriver implements Driver {
         }
     }
 
-    /**
-     * Default is to use file-based HSQLDB. If in-memory is desired, set
-     * "useMemory" property in info to "true" before passing in
-     *
-     * @param url URL to connect to
-     * @param info Properties file
-     * @return
-     * @throws SQLException
-     */
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
         Connection connection = null;
@@ -81,42 +71,33 @@ public class ExcelDBDriver implements Driver {
         }
 
         File inputFile = new File(url.substring(URL_PREFIX.length()));
+        if (!inputFile.exists()) {
+            throw new SQLException("File not found: " + inputFile);
+        }
 
-        String hsqldbURL = null;
-        if (info != null) {
-            String useFile = info.getProperty("useFile");
-            if (useFile != null && Boolean.parseBoolean(useFile)) {
-                hsqldbURL = HSQLDB_PREFIX_FILE + inputFile.getAbsolutePath();
+        try {
+            FileInputStream inputStream = new FileInputStream(inputFile);
+            if (isOldFormat(inputFile.getName())) {
+                workbook = new HSSFWorkbook(inputStream);
+                inputStream.close();
+            } else if (isNewFormat(inputFile.getName())) {
+                workbook = new XSSFWorkbook(inputStream);
+                inputStream.close();
             } else {
-                hsqldbURL = HSQLDB_PREFIX_MEM + inputFile.getAbsolutePath();
+                throw new SQLException("Input file not Excel format: "
+                        + inputFile.getAbsolutePath());
             }
+        } catch (FileNotFoundException ex) {
+            logger.log(Level.SEVERE, inputFile.getAbsolutePath(), ex);
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, inputFile.getAbsolutePath(), ex);
         }
 
+        String hsqldbURL = HSQLDB_PREFIX_MEM + inputFile.getAbsolutePath();
         Connection hsqldbConnection = DriverManager.getConnection(hsqldbURL);
-
-        if (inputFile.exists()) {
-
-            try {
-                FileInputStream inputStream = new FileInputStream(inputFile);
-                if (isOldFormat(inputFile.getName())) {
-                    workbook = new HSSFWorkbook(inputStream);
-                    inputStream.close();
-                } else if (isNewFormat(inputFile.getName())) {
-                    workbook = new XSSFWorkbook(inputStream);
-                    inputStream.close();
-                } else {
-                    throw new SQLException("Input file not Excel format: "
-                            + inputFile.getAbsolutePath());
-                }
-            } catch (FileNotFoundException ex) {
-                logger.log(Level.SEVERE, inputFile.getAbsolutePath(), ex);
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, inputFile.getAbsolutePath(), ex);
-            }
-            Statement hsqlStatement = hsqldbConnection.createStatement();
-            new CreateTableFromSheet().createHSQLDBFromWorkbook(workbook, hsqlStatement);
-        }
-
+        Statement hsqlStatement = hsqldbConnection.createStatement();
+        new CreateTableFromSheet().createHSQLDBFromWorkbook(workbook, hsqlStatement);
+        
         connection = new ExcelDBConnection(hsqldbConnection);
         return connection;
     }

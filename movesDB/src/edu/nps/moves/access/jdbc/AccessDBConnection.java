@@ -45,17 +45,17 @@ public class AccessDBConnection implements Connection {
 
     @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-        return wrappedConnection.prepareStatement(sql);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); 
     }
 
     @Override
     public CallableStatement prepareCall(String sql) throws SQLException {
-        return wrappedConnection.prepareCall(sql);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String nativeSQL(String sql) throws SQLException {
-        return wrappedConnection.nativeSQL(sql);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -65,12 +65,12 @@ public class AccessDBConnection implements Connection {
 
     @Override
     public boolean getAutoCommit() throws SQLException {
-        return wrappedConnection.getAutoCommit();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void commit() throws SQLException {
-        wrappedConnection.commit();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -94,65 +94,66 @@ public class AccessDBConnection implements Connection {
     }
 
     /**
+     * Does nothing - AccessDBConnection is read only
      * @param readOnly
      * @throws SQLException 
      */
     @Override
     public void setReadOnly(boolean readOnly) throws SQLException {
-        wrappedConnection.setReadOnly(readOnly);
     }
 
     /**
+     * @return true
      * @throws SQLException 
      */
     @Override
     public boolean isReadOnly() throws SQLException {
-        return wrappedConnection.isReadOnly();
+        return true;
     }
 
     @Override
     public void setCatalog(String catalog) throws SQLException {
-        wrappedConnection.setCatalog(catalog);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getCatalog() throws SQLException {
-        return wrappedConnection.getCatalog();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void setTransactionIsolation(int level) throws SQLException {
-        wrappedConnection.setTransactionIsolation(level);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getTransactionIsolation() throws SQLException {
-        return wrappedConnection.getTransactionIsolation();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public SQLWarning getWarnings() throws SQLException {
-        return wrappedConnection.getWarnings();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void clearWarnings() throws SQLException {
-        wrappedConnection.clearWarnings();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-        return wrappedConnection.createStatement(resultSetType, resultSetConcurrency);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        return wrappedConnection.prepareCall(sql, resultSetType, resultSetConcurrency);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        return wrappedConnection.prepareCall(sql, resultSetType, resultSetConcurrency);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -167,87 +168,87 @@ public class AccessDBConnection implements Connection {
 
     @Override
     public void setHoldability(int holdability) throws SQLException {
-        wrappedConnection.setHoldability(holdability);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getHoldability() throws SQLException {
-        return wrappedConnection.getHoldability();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Savepoint setSavepoint() throws SQLException {
-        return wrappedConnection.setSavepoint();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Savepoint setSavepoint(String name) throws SQLException {
-        return wrappedConnection.setSavepoint(name);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void rollback(Savepoint savepoint) throws SQLException {
-        wrappedConnection.rollback();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-        wrappedConnection.releaseSavepoint(savepoint);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return wrappedConnection.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return wrappedConnection.prepareStatement(sql, resultSetType, resultSetConcurrency);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return wrappedConnection.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
-        return wrappedConnection.prepareStatement(sql, autoGeneratedKeys);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
-        return wrappedConnection.prepareStatement(sql, columnIndexes);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
-        return wrappedConnection.prepareStatement(sql, columnNames);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Clob createClob() throws SQLException {
-        return wrappedConnection.createClob();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Blob createBlob() throws SQLException {
-        return wrappedConnection.createBlob();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public NClob createNClob() throws SQLException {
-        return wrappedConnection.createNClob();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public SQLXML createSQLXML() throws SQLException {
-        return wrappedConnection.createSQLXML();
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean isValid(int timeout) throws SQLException {
-        return wrappedConnection.isValid(timeout);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -262,7 +263,7 @@ public class AccessDBConnection implements Connection {
 
     @Override
     public String getClientInfo(String name) throws SQLException {
-        return wrappedConnection.getClientInfo(name);
+        throw new SQLFeatureNotSupportedException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

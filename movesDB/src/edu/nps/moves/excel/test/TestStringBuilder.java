@@ -16,11 +16,6 @@ public class TestStringBuilder {
         System.out.println(stringBuilder);
         stringBuilder.replace(lastIndex, stringBuilder.length(), ")");
         System.out.println(stringBuilder);
-        
-        
-        String fileName = "foobar.xlsx";
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-        System.out.printf("File: %s extension: %s%n", fileName, extension);
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -77,7 +76,7 @@ public class CreateTableFromSheet {
         
         StringBuilder queryBuilder = new StringBuilder("CREATE TABLE ");
         queryBuilder.append('\"');
-        queryBuilder.append(sheet.getSheetName().trim());
+        queryBuilder.append(sheet.getSheetName());
         queryBuilder.append('\"');
         queryBuilder.append(' ');
         queryBuilder.append('(');
@@ -105,7 +104,7 @@ public class CreateTableFromSheet {
                         break;
                 }
             } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-                columnName = cell.getStringCellValue().trim();
+                columnName = cell.getStringCellValue();
             } else {
                 throw new SQLException(String.format("Column %d of sheet %s not a String",
                         column, sheet.getSheetName()));
@@ -123,8 +122,6 @@ public class CreateTableFromSheet {
                 String blankFirstColumn = columnNames.remove(columnIndex);
                 logger.info(String.format("Blank column %s at end of row removed",
                         blankFirstColumn));
-            } else {
-                break;
             }
         }
         columnNameMap.put(sheet.getSheetName(), columnNames);
@@ -132,13 +129,9 @@ public class CreateTableFromSheet {
         List<String> columnTypes = new ArrayList<>();
         Row secondRow = sheet.getRow(1);
         if (secondRow == null) {
-            logger.log(Level.INFO, "No second row in sheet {0}", sheet.getSheetName());
+            throw new SQLException("No second row in sheet " + sheet.getSheetName());
         }
         for (int column = 0; column < columnNames.size(); ++column) {
-            if (secondRow == null) {
-                columnTypes.add("VARCHAR(255)");
-                continue;
-            }
             Cell cell = secondRow.getCell(column);
             if (cell == null) {
                 columnTypes.add("VARCHAR(255)");

@@ -29,7 +29,7 @@ public class ExcelDBConnection implements Connection {
     
     private static final Logger log = Logger.getLogger(ExcelDBConnection.class.getName());
         
-    private Connection wrappedConnection;
+    protected Connection wrappedConnection;
     
     public ExcelDBConnection(Connection wrappedConnection) throws SQLException {
         this.wrappedConnection = wrappedConnection;
@@ -312,10 +312,6 @@ public class ExcelDBConnection implements Connection {
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return isWrapperFor(iface);
-    }
-
-    public Connection getWrappedConnection() {
-        return wrappedConnection;
     }
     
 

@@ -24,8 +24,6 @@ public class AccessDBDriver implements Driver {
 
     private static final String HSQLDB_PREFIX_MEM = "jdbc:hsqldb:mem:";
 
-    private static final String HSQLDB_PREFIX_FILE = "jdbc:hsqldb:file:";
-
     public static final String URL_PREFIX = "jdbc:access:";
     public static final boolean JDBC_COMPLIANT = false;
     public static final int MINOR_VERSION = 1;
@@ -64,17 +62,7 @@ public class AccessDBDriver implements Driver {
         if (!inputFile.exists()) {
             throw new SQLException("File not found: " + inputFile);
         }
-        String hsqldbURL = null;
-
-        if (info != null) {
-            String useFile = info.getProperty("useFile");
-            if (useFile != null && Boolean.parseBoolean(useFile)) {
-                hsqldbURL = HSQLDB_PREFIX_FILE + inputFile.getAbsolutePath();
-            } else {
-                hsqldbURL = HSQLDB_PREFIX_MEM + inputFile.getAbsolutePath();
-            }
-        }
-
+        String hsqldbURL = HSQLDB_PREFIX_MEM + inputFile.getAbsolutePath();
         Connection hsqldbConnection = DriverManager.getConnection(hsqldbURL);
         try {
             database = DatabaseBuilder.open(inputFile);
@@ -99,7 +87,7 @@ public class AccessDBDriver implements Driver {
      * @param url
      * @param info
      * @return zero-length array of DriverPropertyInfo
-     * @throws SQLException
+     * @throws SQLException 
      */
     @Override
     public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
