@@ -94,8 +94,8 @@ public class AccessDBConnection implements Connection {
     }
 
     /**
-     * @param readOnly
-     * @throws SQLException 
+     * @param readOnly Sets readOnly on wrapped connection
+     * @throws SQLException if wrappedConnection throws one
      */
     @Override
     public void setReadOnly(boolean readOnly) throws SQLException {
@@ -103,7 +103,8 @@ public class AccessDBConnection implements Connection {
     }
 
     /**
-     * @throws SQLException 
+     * @return true if wrappedConnection is readOnly
+     * @throws SQLException required by interface
      */
     @Override
     public boolean isReadOnly() throws SQLException {

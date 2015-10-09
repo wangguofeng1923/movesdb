@@ -92,8 +92,8 @@ public class ExcelDBConnection implements Connection {
 
     /**
      * Does nothing - ExcelDBConnection is always read-only
-     * @param readOnly
-     * @throws SQLException 
+     * @param readOnly Nominally if readOnly - always true regardless of this value
+     * @throws SQLException Required by interface
      */
     @Override
     public void setReadOnly(boolean readOnly) throws SQLException {
@@ -102,7 +102,7 @@ public class ExcelDBConnection implements Connection {
     /**
      * 
      * @return true
-     * @throws SQLException 
+     * @throws SQLException required by interface
      */
     @Override
     public boolean isReadOnly() throws SQLException {

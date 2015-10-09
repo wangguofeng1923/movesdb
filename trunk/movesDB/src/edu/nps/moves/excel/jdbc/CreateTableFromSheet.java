@@ -54,15 +54,14 @@ public class CreateTableFromSheet {
      * of the sheet. Ideally, the second row should not have any blank cells.
      * If it does, then the type for that column is VARCHAR(255). Otherwise,
      * the type is set according to the mapping:</p>
-     * <UL><LI>CELL_TYPE_BOOLEAN -> BOOLEAN</LI>
-     * <LI>CELL_TYPE_NUMERIC -> DOUBLE</LI>
-     * <LI>CELL_TYPE_STRING -> VARCHAR(255)</LI>
-     * <LI>CELL_TYPE_BLANK -> VARCHAR(255)</LI></UL>
+     * <UL><LI>CELL_TYPE_BOOLEAN - BOOLEAN</LI>
+     * <LI>CELL_TYPE_NUMERIC -&gt; DOUBLE</LI>
+     * <LI>CELL_TYPE_STRING -&gt; VARCHAR(255)</LI>
+     * <LI>CELL_TYPE_BLANK -&gt; VARCHAR(255)</LI></UL>
      * 
-     * <p></p>
      * @param sheet Sheet from which to create a table
      * @param statement Used to execute CREATE statement
-     * @throws SQLException 
+     * @throws SQLException If any queries to wrapped connection throw one
      */
 
     public void createTable(Sheet sheet, Statement statement) throws SQLException {
