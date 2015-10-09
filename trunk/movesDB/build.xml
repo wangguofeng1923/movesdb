@@ -11,8 +11,10 @@
     <description>Builds, tests, and runs the project movesDB.</description>
     <import file="nbproject/build-impl.xml"/>
     
-   <property name="project.name" value="MOVES DB" />
-   <property name="version.num" value="0.2.1" />
+<!--   <property name="project.name" value="MOVES DB" />
+   <property name="version.num" value="0.2.1" />-->
+   <loadproperties srcfile="./movesdb.properties" />
+   <property name="version" value="${majorVersion}.${minorVersion}.${subminorVersion}" />
    <tstamp>
       <format property="NOW" pattern="yyyy-MM-dd HH:mm:ss z" />
    </tstamp>
@@ -25,6 +27,39 @@
       <!--<attribute name="Implementation-URL" value="https://eos.nps.edu/" />-->
    </manifest>
    
+   <target name="-post-jar" depends="javadoc">
+       <copy todir="${dist.dir}" file="./README.TXT" filtering="on" overwrite="true">
+           <filterset>
+               <filter token="VERSION" value="${version}" />
+           </filterset>
+       </copy>
+           
+       <copy todir="${dist.javadoc.dir}">
+           <fileset dir="./doc" />
+       </copy>
+       <zip destfile="${dist.dir}/src.zip">
+           <fileset dir="./src" />
+       </zip>
+   </target>
+   
+   <target name="package" depends="clean,jar">
+       <zip destfile="movesDB-${version}.zip">
+           <fileset dir="${dist.dir}" />
+       </zip>
+       <tar destfile="./movesDB-${version}.tar">
+           <fileset dir="${dist.dir}" />
+       </tar>
+       <gzip src="./movesDB-${version}.tar" destfile="movesDB-${version}.tar.gz" />
+       <bzip2 src="./movesDB-${version}.tar" destfile="movesDB-${version}.tar.bz2" />
+       <delete file="./movesDB-${version}.tar" />
+   </target>
+   
+   <target name="clean-dist-files">
+       <echo message="Deleting compressed distribution files (moves-DB*.zip,tar.gz,tar.bz2)" />
+       <delete>
+           <fileset dir="." includes="movesDB-*" />
+       </delete>
+   </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
