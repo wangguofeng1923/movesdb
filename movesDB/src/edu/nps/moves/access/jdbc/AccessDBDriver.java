@@ -96,10 +96,10 @@ public class AccessDBDriver implements Driver {
     }
 
     /**
-     * @param url
-     * @param info
+     * @param url Given URL
+     * @param info Given Properties instance
      * @return zero-length array of DriverPropertyInfo
-     * @throws SQLException
+     * @throws SQLException Required by interface
      */
     @Override
     public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {

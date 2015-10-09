@@ -55,13 +55,13 @@ public class ExcelDBDriver implements Driver {
     }
 
     /**
-     * Default is to use file-based HSQLDB. If in-memory is desired, set
+     * Default is to use memory-based HSQLDB. If in-memory is desired, set
      * "useMemory" property in info to "true" before passing in
      *
      * @param url URL to connect to
      * @param info Properties file
-     * @return
-     * @throws SQLException
+     * @return Connection to wrapped HSQLDB
+     * @throws SQLException If thrown by attempt to get connection
      */
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
@@ -136,7 +136,7 @@ public class ExcelDBDriver implements Driver {
      * @param url URL to consider
      * @return true if url starts with URL_PREFIX and has more characters than
      * the prefix
-     * @throws SQLException
+     * @throws SQLException required by interface
      */
     @Override
     public boolean acceptsURL(String url) throws SQLException {
@@ -146,10 +146,10 @@ public class ExcelDBDriver implements Driver {
 
     /**
      *
-     * @param url
-     * @param info
+     * @param url Given URL
+     * @param info Given Properties instance
      * @return zero-length array of DriverPropertyInfo
-     * @throws SQLException
+     * @throws SQLException required by interface
      */
     @Override
     public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
