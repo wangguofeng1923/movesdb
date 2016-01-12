@@ -20,12 +20,11 @@
    </tstamp>
    
    <manifest file="MANIFEST.MF">
-      <attribute name="Implementation-Title" value="${project.name}" />           
-      <attribute name="Implementation-Version" value="${version.num}" />
+      <attribute name="Implementation-Title" value="movesDB" />           
+      <attribute name="Implementation-Version" value="${version}" />
       <attribute name="Built-By" value="${user.name}" />
       <attribute name="Build-Date" value="${NOW}" />
-      <attribute name="Version" value="${version}" />
-      <!--<attribute name="Implementation-URL" value="https://eos.nps.edu/" />-->
+      <attribute name="Implementation-URL" value="https://sourceforge.net/projects/movesdb/" />
    </manifest>
    
    <target name="-post-jar" depends="javadoc">
