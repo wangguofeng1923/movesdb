@@ -31,7 +31,7 @@ public class TestCreateTableFromSheet {
     public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException, IOException, SQLException {
         Class.forName("edu.nps.moves.excel.jdbc.ExcelDBDriver");
 
-        String inputFileName = args.length > 0 ? args[0] : "data/DS_LBC_new.xlsx";
+        String inputFileName = args.length > 0 ? args[0] : "data/Test.xlsx";
         File inputFile = new File(inputFileName);
         System.out.println("Input file: " + inputFile.getAbsolutePath() + " " + inputFile.exists());
 

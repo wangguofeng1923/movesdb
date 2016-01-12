@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.9.4
-Created-By: 1.8.0_25-b17 (Oracle Corporation)
+Created-By: 1.8.0_65-b17 (Oracle Corporation)
 Implementation-Title: ${project.name}
 Implementation-Version: ${version.num}
 Built-By: ahbuss
-Build-Date: 2015-10-09 16:39:40 PDT
+Build-Date: 2016-01-12 13:52:10 PST
+Version: 0.1.2
 
