@@ -1,0 +1,5 @@
+0.1.1
+    - First version - reads Excel spreadsheets in all formats except .xlsb and
+      Access database files in all formats.
+0.1.2
+    - Fixed bug that incorrectly read in cells with formulas from Excel

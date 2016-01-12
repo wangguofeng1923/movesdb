@@ -144,8 +144,9 @@ public class CreateTableFromSheet {
             } else if (mapping.containsKey(cell.getCellType())) {
                 columnTypes.add(mapping.get(cell.getCellType()));
             } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-                evaluator.evaluateFormulaCell(cell);
-                columnTypes.add(mapping.get(cell.getCachedFormulaResultType()));
+                CellValue value = evaluator.evaluate(cell);
+                cell.setCellType(value.getCellType());
+                columnTypes.add(mapping.get(cell.getCellType()));
             } else {
                 throw new SQLException(
                         String.format("Cell %d in sheet %s not required type: %d",
