@@ -6,4 +6,3 @@ Implementation-Version: 0.1.2
 Built-By: ahbuss
 Build-Date: 2016-01-12 14:40:52 PST
 Implementation-URL: https://sourceforge.net/projects/movesdb/
-
