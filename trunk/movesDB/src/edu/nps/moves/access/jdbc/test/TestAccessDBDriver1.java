@@ -22,7 +22,7 @@ public class TestAccessDBDriver1 {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("edu.nps.moves.access.jdbc.AccessDBDriver");
 
-        String inputFileName = args.length > 0 ? args[0] : "data/dsLbc.mdb";
+        String inputFileName = args.length > 0 ? args[0] : "data/Orders.accdb";
         File inputFile = new File(inputFileName);
         System.out.println(inputFile.getAbsoluteFile() + " " + inputFile.exists());
 
