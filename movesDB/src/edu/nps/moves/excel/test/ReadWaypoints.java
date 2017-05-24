@@ -19,6 +19,8 @@ public class ReadWaypoints {
 
     /**
      * @param args the command line arguments
+     * @throws ClassNotFoundException if driver not found
+     * @throws SQLException if problem with SQL query
      */
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("edu.nps.moves.excel.jdbc.ExcelDBDriver");

@@ -17,8 +17,8 @@ public class TeatReadNOLH {
 
     /**
      * @param args the command line arguments
-     * @throws java.lang.ClassNotFoundException
-     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException if driver not found
+     * @throws java.sql.SQLException if problem with SQL query
      */
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("edu.nps.moves.excel.jdbc.ExcelDBDriver");
