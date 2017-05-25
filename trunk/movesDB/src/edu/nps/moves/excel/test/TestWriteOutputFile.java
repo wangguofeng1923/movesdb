@@ -17,6 +17,9 @@ public class TestWriteOutputFile {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.ClassNotFoundException if driver not found
+     * @throws java.sql.SQLException if SQLExcepion during query
+     * @throws java.io.IOException if exception during writing
      */
     public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException {
 
