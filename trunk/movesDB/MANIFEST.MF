@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.9.7
 Created-By: 1.8.0_131-b11 (Oracle Corporation)
 Implementation-Title: movesDB
-Implementation-Version: 0.1.2
+Implementation-Version: 0.2.0
 Built-By: ahbuss
-Build-Date: 2017-05-25 13:26:19 PDT
+Build-Date: 2017-05-25 14:21:05 PDT
 Implementation-URL: https://sourceforge.net/projects/movesdb/
 

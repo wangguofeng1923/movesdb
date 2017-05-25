@@ -38,9 +38,13 @@
        <copy todir="${dist.javadoc.dir}">
            <fileset dir="./doc" />
        </copy>
-       <zip destfile="${dist.dir}/src.zip">
+       <zip destfile="${dist.dir}/movesDB-${version}-src.zip">
            <fileset dir="./src" />
        </zip>
+       <zip destfile="${dist.dir}/movesDB-${version}-doc.zip">
+           <fileset dir="${dist.dir}/javadoc" />
+       </zip>
+       <move file="${dist.dir}/movesDB.jar" toFile="${dist.dir}/movesDB-${version}.jar" />
    </target>
    
    <target name="package" depends="clean,jar,clean-dist-files">
