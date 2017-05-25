@@ -27,6 +27,9 @@ public class TestCreateTableFromSheet {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.ClassNotFoundException if driver not found
+     * @throws java.io.FileNotFoundException if input file not found
+     * @throws java.sql.SQLException if SQLExcepion during query
      */
     public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException, IOException, SQLException {
         Class.forName("edu.nps.moves.excel.jdbc.ExcelDBDriver");

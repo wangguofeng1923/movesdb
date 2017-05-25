@@ -21,6 +21,8 @@ public class TestLoadDriver2 {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.ClassNotFoundException if driver not found
+     * @throws java.sql.SQLException if SQLExcepion during query
      */
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         String fileName = args.length > 0 ? args[0] : "data/Test2.xlsx";

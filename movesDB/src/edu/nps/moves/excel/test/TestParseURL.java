@@ -27,6 +27,7 @@ public class TestParseURL {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException if SQLExcepion during query
      */
     public static void main(String[] args) throws SQLException {
         String url = "jdbc:excel:data/DS_LBC_new.xlsx";

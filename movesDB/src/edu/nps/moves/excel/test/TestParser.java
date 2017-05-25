@@ -2,9 +2,10 @@ package edu.nps.moves.excel.test;
 
 import java.io.StringReader;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
-import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.Distinct;
 import net.sf.jsqlparser.statement.select.FromItem;
@@ -19,31 +20,36 @@ import net.sf.jsqlparser.statement.select.SelectItem;
  */
 public class TestParser {
 
-    private static CCJSqlParserManager ccjSqlParserManager = new CCJSqlParserManager();
+    private static final CCJSqlParserManager ccjSqlParserManager = new CCJSqlParserManager();
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws JSQLParserException {
-        String sql = "SELECT * FROM ScenarioData";
-        parse(sql);
-        sql = "SELECT ScenarioLength, Replications FROM ScenarioData";
-        parse(sql);
+    public static void main(String[] args) {
+        try {
+            //throws JSQLParserException {
+            String sql = "SELECT * FROM ScenarioData";
+            parse(sql);
+            sql = "SELECT ScenarioLength, Replications FROM ScenarioData";
+            parse(sql);
 //        NOTE: INDEX is a reserved word in strict SQL!
 //        sql = "SELECT INDEX, SEED FROM Seeds ORDER BY INDEX";
 //        parse(sql);
-        sql = "SELECT X, SEED FROM Seeds ORDER BY X";
-        parse(sql);
-        sql = "SELECT DISTINCT Unit from Units";
-        parse(sql);
-        
+            sql = "SELECT X, SEED FROM Seeds ORDER BY X";
+            parse(sql);
+            sql = "SELECT DISTINCT Unit from Units";
+            parse(sql);
+        } catch (JSQLParserException ex) {
+            Logger.getLogger(TestParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public static void parse(String sql) throws JSQLParserException {
         System.out.println("parsing " + sql);
         System.out.println("===================");
         Statement statement = ccjSqlParserManager.parse(new StringReader(sql));
-        
+
         System.out.println("Statement: " + statement);
         if (statement instanceof Select) {
             SelectBody selectBody = ((Select) statement).getSelectBody();

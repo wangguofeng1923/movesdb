@@ -10,6 +10,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import static org.apache.poi.ss.usermodel.CellType.BLANK;
+import static org.apache.poi.ss.usermodel.CellType.BOOLEAN;
+import static org.apache.poi.ss.usermodel.CellType.FORMULA;
+import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
+import static org.apache.poi.ss.usermodel.CellType.STRING;
 import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -25,14 +31,14 @@ public class CreateTableFromSheet {
 
     private static final Logger logger = Logger.getLogger(CreateTableFromSheet.class.getName());
 
-    public static final Map<Integer, String> mapping;
+    public static final Map<CellType, String> mapping;
 
     static {
         mapping = new HashMap<>();
-        mapping.put(Cell.CELL_TYPE_BOOLEAN, "BOOLEAN");
-        mapping.put(Cell.CELL_TYPE_NUMERIC, "DOUBLE");
-        mapping.put(Cell.CELL_TYPE_STRING, "VARCHAR(255)");
-        mapping.put(Cell.CELL_TYPE_BLANK, "VARCHAR(255)");
+        mapping.put(BOOLEAN, "BOOLEAN");
+        mapping.put(NUMERIC, "DOUBLE");
+        mapping.put(STRING, "VARCHAR(255)");
+        mapping.put(BLANK, "VARCHAR(255)");
     }
     
     protected Map<String, List<String>> columnNameMap;
@@ -86,24 +92,24 @@ public class CreateTableFromSheet {
         for (int column = 0; column < firstRow.getLastCellNum(); ++column) {
             Cell cell = firstRow.getCell(column);
             String columnName = null;
-            if (cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-                cell = firstRow.createCell(column, Cell.CELL_TYPE_STRING);
+            if (cell == null || cell.getCellTypeEnum()== BLANK) {
+                cell = firstRow.createCell(column, STRING);
                 String missingColumnName = "Blank-" + nextIndexForMissing;
                 cell.setCellValue(missingColumnName);
                 nextIndexForMissing += 1;
                 columnName = cell.getStringCellValue();
                 logger.info(String.format("Cell %d in sheet %s was null, named %s",
                         column, sheet.getSheetName(), cell.getStringCellValue()));
-            } else if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
-                switch (cell.getCellType()) {
-                    case Cell.CELL_TYPE_NUMERIC:
+            } else if (cell.getCellTypeEnum()!= STRING) {
+                switch (cell.getCellTypeEnum()) {
+                    case NUMERIC:
                         double value = cell.getNumericCellValue();
-                        cell.setCellType(Cell.CELL_TYPE_STRING);
+                        cell.setCellType(STRING);
                         cell.setCellValue(Double.toString(value));
                         columnName = cell.getStringCellValue();
                         break;
                 }
-            } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            } else if (cell.getCellTypeEnum()== STRING) {
                 columnName = cell.getStringCellValue().trim();
             } else {
                 throw new SQLException(String.format("Column %d of sheet %s not a String",
@@ -141,16 +147,16 @@ public class CreateTableFromSheet {
             Cell cell = secondRow.getCell(column);
             if (cell == null) {
                 columnTypes.add("VARCHAR(255)");
-            } else if (mapping.containsKey(cell.getCellType())) {
-                columnTypes.add(mapping.get(cell.getCellType()));
-            } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+            } else if (mapping.containsKey(cell.getCellTypeEnum())) {
+                columnTypes.add(mapping.get(cell.getCellTypeEnum()));
+            } else if (cell.getCellTypeEnum() == FORMULA) {
                 CellValue value = evaluator.evaluate(cell);
-                cell.setCellType(value.getCellType());
-                columnTypes.add(mapping.get(cell.getCellType()));
+                cell.setCellType(value.getCellTypeEnum());
+                columnTypes.add(mapping.get(cell.getCellTypeEnum()));
             } else {
                 throw new SQLException(
                         String.format("Cell %d in sheet %s not required type: %d",
-                                column, sheet.getSheetName(), cell.getCellType()));
+                                column, sheet.getSheetName(), cell.getCellTypeEnum()));
             }
         }
         for (int i = 0; i < columnNames.size(); ++i) {
@@ -208,30 +214,30 @@ public class CreateTableFromSheet {
                 if (cell == null) {
                     insertQueryBuilder.append("NULL");
                 } else {
-                    int cellType = cell.getCellType();
-                    if (cellType == Cell.CELL_TYPE_FORMULA) {
+                    CellType cellType = cell.getCellTypeEnum();
+                    if (cellType == FORMULA) {
                         CellValue cellValue = evaluator.evaluate(cell);
-                        cellType = cellValue.getCellType();
+                        cellType = cellValue.getCellTypeEnum();
                     }
                     switch (cellType) {
-                        case Cell.CELL_TYPE_BOOLEAN:
+                        case BOOLEAN:
                             insertQueryBuilder.append(cell.getBooleanCellValue());
                             break;
-                        case Cell.CELL_TYPE_NUMERIC:
+                        case NUMERIC:
                             insertQueryBuilder.append(cell.getNumericCellValue());
                             break;
-                        case Cell.CELL_TYPE_STRING:
+                        case STRING:
                             String cellValue = cell.getStringCellValue();
                             cellValue = cellValue.replaceAll("\\\\", "/");
                             insertQueryBuilder.append('\'');
                             insertQueryBuilder.append(cellValue);
                             insertQueryBuilder.append('\'');
                             break;
-                        case Cell.CELL_TYPE_BLANK:
-                        case Cell.CELL_TYPE_ERROR:
+                        case BLANK:
+                        case ERROR:
                             insertQueryBuilder.append("NULL");
                             break;
-                        case Cell.CELL_TYPE_FORMULA:
+                        case FORMULA:
                             throw new SQLException("Cell shouldn't still be formula");
                         default:
                             throw new SQLException("Unrecognize cell type");
@@ -271,7 +277,7 @@ public class CreateTableFromSheet {
         for (int column = 0; column < numberRealColumns; ++column) {
             Cell cell = row.getCell(column);
             if (cell != null) {
-                if (cell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                if (cell.getCellTypeEnum()!= BLANK) {
                     nullRow = false;
                     break;
                 }

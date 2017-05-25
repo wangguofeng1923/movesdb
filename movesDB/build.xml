@@ -56,9 +56,9 @@
    </target>
    
    <target name="clean-dist-files">
-       <echo message="Deleting compressed distribution files (moves-DB*.zip,tar.gz,tar.bz2)" />
+       <echo message="Deleting compressed distribution files (movesDB*.zip,tar.gz,tar.bz2)" />
        <delete>
-           <fileset dir="." includes="movesDB-*" />
+           <fileset dir="." includes="movesDB*" />
        </delete>
    </target>
    
