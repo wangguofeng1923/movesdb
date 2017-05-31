@@ -55,7 +55,7 @@ public class TestColumnExists {
         }
 
         for (String table : tables) {
-            ResultSet rs = statement.executeQuery("SELECT * FROM \"" + table + "\"");
+            ResultSet rs = statement.executeQuery("SELECT * FROM " + table );
             ResultSetMetaData rsmd = rs.getMetaData();
             for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
                 System.out.print("\t" + rsmd.getColumnName(column));
