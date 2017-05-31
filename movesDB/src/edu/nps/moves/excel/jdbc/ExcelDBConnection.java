@@ -27,9 +27,9 @@ import java.util.logging.Logger;
  */
 public class ExcelDBConnection implements Connection {
     
-    private static final Logger log = Logger.getLogger(ExcelDBConnection.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ExcelDBConnection.class.getName());
         
-    private Connection wrappedConnection;
+    private final Connection wrappedConnection;
     
     public ExcelDBConnection(Connection wrappedConnection) throws SQLException {
         this.wrappedConnection = wrappedConnection;
@@ -37,7 +37,7 @@ public class ExcelDBConnection implements Connection {
 
     @Override
     public Statement createStatement() throws SQLException {
-        return  wrappedConnection.createStatement();
+        return  new ExcelDBStatement(wrappedConnection.createStatement());
     }
 
     @Override

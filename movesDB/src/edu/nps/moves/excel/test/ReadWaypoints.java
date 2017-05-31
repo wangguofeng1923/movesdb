@@ -34,7 +34,9 @@ public class ReadWaypoints {
         
         Statement statement = connection.createStatement();
         
-        String query = "SELECT * FROM \"Waypoints\" WHERE \"Ship\" = 'Nina' ORDER BY ID";
+//        String query = "SELECT * FROM \"Waypoints\" WHERE \"Ship\" = 'Nina' ORDER BY ID";
+        String query = "SELECT * FROM Waypoints WHERE Ship = Nina ORDER BY ID";
+        
 //        String query = "SELECT * FROM \"Waypoints\" ORDER BY ID";
         ResultSet rs = statement.executeQuery(query);
         

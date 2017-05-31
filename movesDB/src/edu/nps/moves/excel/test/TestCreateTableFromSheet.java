@@ -83,7 +83,7 @@ public class TestCreateTableFromSheet {
             Sheet sheet = workbook.getSheet(tableName);
 
 //            CreateTableFromSheet.populateTable(sheet, statement);
-            ResultSet rs = statement.executeQuery("SELECT * FROM \"" + sheet.getSheetName() + "\"");
+            ResultSet rs = statement.executeQuery("SELECT * FROM " + sheet.getSheetName());
             ResultSetMetaData rsMeta = rs.getMetaData();
             for (int column = 1; column <= rsMeta.getColumnCount(); ++column) {
                 System.out.print("\t" + rsMeta.getColumnTypeName(column));
@@ -99,7 +99,7 @@ public class TestCreateTableFromSheet {
 
         if (tableNames.contains("Seeds")) {
 
-            String query = "SELECT \"Index\", \"Seed\" FROM \"Seeds\" ORDER BY \"Index\"";
+            String query = "SELECT Index, Seed FROM Seeds ORDER BY Index";
             ResultSet rs = statement.executeQuery(query);
             System.out.println();
             System.out.println("Seeds:");
@@ -112,7 +112,7 @@ public class TestCreateTableFromSheet {
         System.out.println();
 
         if (tableNames.contains("ForceStructure")) {
-            String query = "SELECT DISTINCT \"Unit\" FROM \"ForceStructure\"";
+            String query = "SELECT DISTINCT Unit FROM ForceStructure";
             ResultSet rs = statement.executeQuery(query);
             System.out.println("ForceStructure (Distinct units only):");
             while (rs.next()) {

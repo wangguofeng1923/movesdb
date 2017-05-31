@@ -5,3 +5,10 @@
     - Fixed bug that incorrectly read in cells with formulas from Excel
 0.2.0
     - Updated Dependent Libraries
+0.3.0
+    - Uses JSQLParser to "fix" SELECT queries by quoting
+    - Works for simple SELECT statements
+    - WHERE clause and ORDER BY clause apparently work
+    - Adds ExcelDBStatement that delegates everything to the wrapped 
+      JDBCStatement from HSQLDB, except that executeQuery(sql) quotes
+      the table and column names before passing on to JDBCStatement.
