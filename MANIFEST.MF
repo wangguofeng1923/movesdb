@@ -4,6 +4,6 @@ Created-By: 1.8.0_131-b11 (Oracle Corporation)
 Implementation-Title: movesDB
 Implementation-Version: 0.3.0
 Built-By: ahbuss
-Build-Date: 2017-05-31 15:51:31 PDT
+Build-Date: 2017-08-02 15:06:48 PDT
 Implementation-URL: https://sourceforge.net/projects/movesdb/
 
