@@ -56,7 +56,7 @@ public class TestLoadDriver {
 
         String tableName = "ScenarioData";
         System.out.println(tableName);
-        String query = "SELECT * FROM \"" + tableName + "\"";
+        String query = "SELECT * FROM " + tableName ;
         ResultSet resultSet = statement.executeQuery(query);
 
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
@@ -77,7 +77,7 @@ public class TestLoadDriver {
 
         tableName = "Output";
         System.out.println(tableName);
-        query = "SELECT * FROM \"" + tableName + "\"";        resultSet = statement.executeQuery(query);
+        query = "SELECT * FROM " + tableName + "";        resultSet = statement.executeQuery(query);
         resultSetMetaData = resultSet.getMetaData();
         for (int column = 1; column <= resultSetMetaData.getColumnCount(); ++column) {
             System.out.print("\t" + resultSetMetaData.getColumnName(column));
