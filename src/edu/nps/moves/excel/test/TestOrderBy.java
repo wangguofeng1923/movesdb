@@ -31,6 +31,8 @@ public class TestOrderBy {
         String query = "SELECT * from TheTable";
         ResultSet rs = statement.executeQuery(query);
         ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println("unordered:");
         for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
             System.out.print(rsmd.getColumnName(column) + "\t");
         }
@@ -41,12 +43,43 @@ public class TestOrderBy {
             }
             System.out.println();
         }
+        rs.close();
 
+        System.out.println("ordered:");
+
+        query += " ORDER BY id";
+        rs = statement.executeQuery(query);
+        rsmd = rs.getMetaData();
+        for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+            System.out.print(rsmd.getColumnName(column) + "\t");
+        }
+        System.out.println();
+
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
         rs.close();
         
-        query += " ORDER BY index";
+        query = "SELECT * FROM TheTable ORDER BY name";
         rs = statement.executeQuery(query);
-        
+        rsmd = rs.getMetaData();
+        System.out.println("Order by name:");
+        for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+            System.out.print(rsmd.getColumnName(column) + "\t");
+        }
+        System.out.println();
+
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
+
+        rs.close();
         statement.close();
         connection.close();
     }
