@@ -95,21 +95,21 @@ public class TestLoadDriver3 {
             rs.close();
         }
 
-        System.out.println("INFORMATION_SCHEMA.COLUMNS:");
-        ResultSet rs = statement.executeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Sheet2'");
-        ResultSetMetaData rsmd = rs.getMetaData();
-        for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
-            System.out.print("\t" + rsmd.getColumnName(column));
-        }
-        while (rs.next()) {
-            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
-                System.out.print("\t" + rs.getString(column));
-            }
-            System.out.println();
-        }
-        System.out.println();
+//        System.out.println("INFORMATION_SCHEMA.COLUMNS:");
+//        ResultSet rs = statement.executeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Sheet2'");
+//        ResultSetMetaData rsmd = rs.getMetaData();
+//        for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+//            System.out.print("\t" + rsmd.getColumnName(column));
+//        }
+//        while (rs.next()) {
+//            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+//                System.out.print("\t" + rs.getString(column));
+//            }
+//            System.out.println();
+//        }
+//        System.out.println();
         
-        rs = databaseMetaData.getColumns(null, null, "Sheet1", "One");
+        ResultSet rs = databaseMetaData.getColumns(null, null, "Sheet1", "One");
         if (rs.next()) {
             System.out.println(rs.getString("COLUMN_NAME"));
         }
@@ -124,7 +124,39 @@ public class TestLoadDriver3 {
             System.out.print("\t" + rs.getString("COLUMN_NAME"));
         }
         System.out.println();
+        
+        String query = "SELECT * FROM Sheet2 ORDER BY Column_2" ;
+        rs = statement.executeQuery(query);
+        ResultSetMetaData rsmd = rs.getMetaData();
+        System.out.println("Just id = 1");
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
 
+        query = "SELECT * FROM Sheet2 WHERE Column_2 < 4";
+        rs = statement.executeQuery(query);
+        rsmd = rs.getMetaData();
+        System.out.println("Just Column_2 < 4:");
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
+        query = "SELECT id, Column_1 FROM Sheet2 WHERE id <> 2 AND Column_2 >= 3";
+        rs = statement.executeQuery(query);
+        rsmd = rs.getMetaData();
+        System.out.println("Just Column_1 and id:");
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
+        
         rs.close();
         statement.close();
         connection.close();
