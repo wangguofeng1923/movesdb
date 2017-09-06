@@ -24,6 +24,7 @@ import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.FromItem;
+import net.sf.jsqlparser.statement.select.Join;
 import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
@@ -292,10 +293,18 @@ public class ExcelDBStatement implements Statement {
                         }
                     }
                     FromItem fromItem = plainSelect.getFromItem();
-                    String from = fromItem.toString();
                     if (fromItem instanceof Table) {
-                        Table table = (Table) fromItem;
-                        table.setName('\"' + from + '\"');
+                        fixTableName((Table) fromItem);
+                    }
+
+                    List<Join> joins = plainSelect.getJoins();
+                    if (joins != null) {
+                        for (Join join : joins) {
+                            fromItem = join.getRightItem();
+                            if (fromItem instanceof Table) {
+                                fixTableName((Table) fromItem);
+                            }
+                        }
                     }
 
                     Expression whereExpression = plainSelect.getWhere();
@@ -335,28 +344,43 @@ public class ExcelDBStatement implements Statement {
             Column column = (Column) leftExpression;
             column.setColumnName('\"' + column.getColumnName() + '\"');
         } else if (leftExpression instanceof ComparisonOperator) {
-            fixComparisonOperator((ComparisonOperator)leftExpression);
+            fixComparisonOperator((ComparisonOperator) leftExpression);
         }
-        
+
         Expression rightExpression = binaryExpression.getRightExpression();
         if (rightExpression instanceof Column) {
             Column column = (Column) rightExpression;
-            column.setColumnName('\'' + column.getColumnName() + '\'');
+            column.setColumnName('\"' + column.getColumnName() + '\"');
         } else if (rightExpression instanceof ComparisonOperator) {
-            fixComparisonOperator((ComparisonOperator)rightExpression);
+            fixComparisonOperator((ComparisonOperator) rightExpression);
         }
     }
-    
+
     private static void fixComparisonOperator(ComparisonOperator comparisonOperator) {
         Expression leftExpression = comparisonOperator.getLeftExpression();
         if (leftExpression instanceof Column) {
             Column column = (Column) leftExpression;
+            Table table = column.getTable();
             column.setColumnName('\"' + column.getColumnName() + '\"');
+            if (table.getName() != null) {
+                table.setName("\"" + table.getName() + "\"");
+            }
         }
         Expression rightExpression = comparisonOperator.getRightExpression();
         if (rightExpression instanceof Column) {
             Column column = (Column) rightExpression;
-            column.setColumnName('\'' + column.getColumnName() + '\'');
+            Table table = column.getTable();
+            column.setColumnName('\"' + column.getColumnName() + '\"');
+            if (table.getName() != null) {
+                table.setName("\"" + table.getName() + "\"");
+            }
+        }
+    }
+
+    private static void fixTableName(Table table) {
+        String name = table.getName();
+        if (name != null) {
+            table.setName("\"" + name + "\"");
         }
     }
 }

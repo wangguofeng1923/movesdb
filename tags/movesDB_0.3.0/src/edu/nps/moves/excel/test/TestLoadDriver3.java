@@ -1,6 +1,7 @@
 package edu.nps.moves.excel.test;
 
 import edu.nps.moves.excel.jdbc.ExcelDBDriver;
+import edu.nps.moves.excel.jdbc.ExcelDBStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -72,7 +73,7 @@ public class TestLoadDriver3 {
             while (rs.next()) {
                 for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
                     System.out.print("\t");
-                    switch(rsmd.getColumnType(column)) {
+                    switch (rsmd.getColumnType(column)) {
                         case VARCHAR:
                             System.out.print(rs.getString(column));
                             break;
@@ -108,7 +109,6 @@ public class TestLoadDriver3 {
 //            System.out.println();
 //        }
 //        System.out.println();
-        
         ResultSet rs = databaseMetaData.getColumns(null, null, "Sheet1", "One");
         if (rs.next()) {
             System.out.println(rs.getString("COLUMN_NAME"));
@@ -117,18 +117,18 @@ public class TestLoadDriver3 {
         if (rs.next()) {
             System.out.println(rs.getString("COLUMN_NAME"));
         }
-        
+
         rs = databaseMetaData.getColumns(null, null, "Sheet2", null);
         System.out.println("All for Sheet2:");
-        while(rs.next()) {
+        while (rs.next()) {
             System.out.print("\t" + rs.getString("COLUMN_NAME"));
         }
         System.out.println();
-        
-        String query = "SELECT * FROM Sheet2 ORDER BY Column_2" ;
+
+        String query = "SELECT * FROM Sheet2 ORDER BY Column_2";
         rs = statement.executeQuery(query);
         ResultSetMetaData rsmd = rs.getMetaData();
-        System.out.println("Just id = 1");
+        System.out.println("Ordered by Column_2");
         while (rs.next()) {
             for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
                 System.out.print(rs.getObject(column) + "\t");
@@ -146,7 +146,8 @@ public class TestLoadDriver3 {
             }
             System.out.println();
         }
-        query = "SELECT id, Column_1 FROM Sheet2 WHERE id <> 2 AND Column_2 >= 3";
+        query = "SELECT id, Column_1 FROM Sheet2, Sheet1 WHERE id <> 2 AND Column_2 >= 3";
+        System.out.println(ExcelDBStatement.fixQuery(query));
         rs = statement.executeQuery(query);
         rsmd = rs.getMetaData();
         System.out.println("Just Column_1 and id:");
@@ -156,7 +157,31 @@ public class TestLoadDriver3 {
             }
             System.out.println();
         }
-        
+
+//        query = "SELECT id, Three FROM Sheet2, Sheet1";
+//        System.out.println(ExcelDBStatement.fixQuery(query));
+//        rs = statement.executeQuery(query);
+//        rsmd = rs.getMetaData();
+//        System.out.println("Two Tables:");
+//        while (rs.next()) {
+//            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+//                System.out.print(rs.getObject(column) + "\t");
+//            }
+//            System.out.println();
+//        }
+//if (true) return;
+        query = "SELECT * FROM Sheet1 WHERE Sheet1.One >= Sheet2.id";
+        System.out.println(ExcelDBStatement.fixQuery(query));
+        rs = statement.executeQuery(query);
+        rsmd = rs.getMetaData();
+        System.out.println("Trying another WHERE...:");
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
+
         rs.close();
         statement.close();
         connection.close();
