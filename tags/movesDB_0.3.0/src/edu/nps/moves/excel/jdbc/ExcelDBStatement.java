@@ -304,6 +304,10 @@ public class ExcelDBStatement implements Statement {
                             if (fromItem instanceof Table) {
                                 fixTableName((Table) fromItem);
                             }
+                            Expression onExpression = join.getOnExpression();
+                            if (onExpression != null && onExpression instanceof BinaryExpression) {
+                                fixBinaryExpression((BinaryExpression) onExpression);
+                            }
                         }
                     }
 
@@ -343,6 +347,10 @@ public class ExcelDBStatement implements Statement {
         if (leftExpression instanceof Column) {
             Column column = (Column) leftExpression;
             column.setColumnName('\"' + column.getColumnName() + '\"');
+            Table table = column.getTable();
+            if (table.getName() != null) {
+                fixTableName(table);
+            }
         } else if (leftExpression instanceof ComparisonOperator) {
             fixComparisonOperator((ComparisonOperator) leftExpression);
         }
@@ -351,6 +359,10 @@ public class ExcelDBStatement implements Statement {
         if (rightExpression instanceof Column) {
             Column column = (Column) rightExpression;
             column.setColumnName('\"' + column.getColumnName() + '\"');
+            Table table = column.getTable();
+            if (table.getName() != null) {
+                fixTableName(table);
+            }
         } else if (rightExpression instanceof ComparisonOperator) {
             fixComparisonOperator((ComparisonOperator) rightExpression);
         }

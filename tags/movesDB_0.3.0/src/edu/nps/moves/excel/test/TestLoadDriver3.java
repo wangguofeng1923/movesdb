@@ -124,7 +124,8 @@ public class TestLoadDriver3 {
             System.out.print("\t" + rs.getString("COLUMN_NAME"));
         }
         System.out.println();
-
+        rs.close();
+        
         String query = "SELECT * FROM Sheet2 ORDER BY Column_2";
         rs = statement.executeQuery(query);
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -135,6 +136,7 @@ public class TestLoadDriver3 {
             }
             System.out.println();
         }
+        rs.close();
 
         query = "SELECT * FROM Sheet2 WHERE Column_2 < 4";
         rs = statement.executeQuery(query);
@@ -146,7 +148,9 @@ public class TestLoadDriver3 {
             }
             System.out.println();
         }
-        query = "SELECT id, Column_1 FROM Sheet2, Sheet1 WHERE id <> 2 AND Column_2 >= 3";
+        rs.close();
+        
+        query = "SELECT DISTINCT id, Column_1 FROM Sheet2, Sheet1 WHERE id <> 2 AND Column_2 >= 3";
         System.out.println(ExcelDBStatement.fixQuery(query));
         rs = statement.executeQuery(query);
         rsmd = rs.getMetaData();
@@ -157,6 +161,7 @@ public class TestLoadDriver3 {
             }
             System.out.println();
         }
+        rs.close();
 
 //        query = "SELECT id, Three FROM Sheet2, Sheet1";
 //        System.out.println(ExcelDBStatement.fixQuery(query));
@@ -170,7 +175,22 @@ public class TestLoadDriver3 {
 //            System.out.println();
 //        }
 //if (true) return;
-        query = "SELECT * FROM Sheet1 WHERE Sheet1.One >= Sheet2.id";
+//        query = "SELECT * FROM Sheet1 WHERE Sheet1.One = Sheet2.id";
+        query = "SELECT * FROM Sheet1 INNER JOIN Sheet2 ON Sheet1.One = Sheet2.id";
+        System.out.println(ExcelDBStatement.fixQuery(query));
+        rs = statement.executeQuery(query);
+        rsmd = rs.getMetaData();
+        System.out.println("Trying another WHERE...:");
+        while (rs.next()) {
+            for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
+                System.out.print(rs.getObject(column) + "\t");
+            }
+            System.out.println();
+        }
+        rs.close();
+
+        query = "SELECT * FROM Sheet1 INNER JOIN Sheet2 ON Sheet1.One = Sheet2.id "
+                + "AND Sheet1.Two = Sheet2.Column_3";
         System.out.println(ExcelDBStatement.fixQuery(query));
         rs = statement.executeQuery(query);
         rsmd = rs.getMetaData();
