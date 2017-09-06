@@ -63,7 +63,7 @@ public class TestLoadDriver2 {
         
         String tableName = "TimeVaryingConsumptionLogic";
         System.out.println(tableName);
-        String query = "SELECT * FROM \"" + tableName + "\"";
+        String query = "SELECT * FROM " + tableName;
         ResultSet resultSet = statement.executeQuery(query);
 
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
@@ -82,6 +82,22 @@ public class TestLoadDriver2 {
             System.out.println();
         }
         
+        query = "SELECT * FROM " + tableName + " WHERE consumableType ='FUEL'";
+        resultSet = statement.executeQuery(query);
+        
+        System.out.println("\nJust FUEL:");
+        for (int column = 1; column <= resultSetMetaData.getColumnCount(); ++column) {
+            System.out.print("\t" + resultSetMetaData.getColumnName(column));
+        }
+        System.out.println();
+        while (resultSet.next()) {
+            for (int column = 1; column <= resultSetMetaData.getColumnCount(); ++column) {
+                System.out.print("\t" + resultSet.getString(column));
+            }
+            System.out.println();
+        }
+
+        resultSet.close();
         statement.close();
         connection.close();
     }

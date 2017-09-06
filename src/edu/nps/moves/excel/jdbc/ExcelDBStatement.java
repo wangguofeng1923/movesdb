@@ -15,7 +15,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.expression.operators.relational.ComparisonOperator;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.schema.Column;
@@ -35,7 +38,7 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 public class ExcelDBStatement implements Statement {
 
     public static final CCJSqlParserManager ccjSqlParserManager = new CCJSqlParserManager();
-    
+
     private static final Logger LOGGER = Logger.getLogger(ExcelDBConnection.class.getName());
 
     private final Statement wrappedStatement;
@@ -294,24 +297,16 @@ public class ExcelDBStatement implements Statement {
                         Table table = (Table) fromItem;
                         table.setName('\"' + from + '\"');
                     }
-                    
+
                     Expression whereExpression = plainSelect.getWhere();
                     if (whereExpression != null) {
-                        if (whereExpression instanceof EqualsTo) {
-                            EqualsTo equalsTo = (EqualsTo) whereExpression;
-                            Expression leftExpression = equalsTo.getLeftExpression();
-                            if (leftExpression instanceof Column) {
-                                Column column = (Column) leftExpression;
-                                column.setColumnName('\"' + column.getColumnName() + '\"');
-                            }
-                            Expression rightExpression = equalsTo.getRightExpression();
-                            if (rightExpression instanceof Column) {
-                                Column column = (Column) rightExpression;
-                                column.setColumnName('\'' + column.getColumnName() + '\'');
-                            }
+                        if (whereExpression instanceof ComparisonOperator) {
+                            fixComparisonOperator((ComparisonOperator) whereExpression);
+                        } else if (whereExpression instanceof AndExpression) {
+                            fixBinaryExpression((BinaryExpression) whereExpression);
                         }
                     }
-                    
+
                     List<OrderByElement> orderByElements = plainSelect.getOrderByElements();
                     if (orderByElements != null) {
                         for (OrderByElement obe : orderByElements) {
@@ -332,5 +327,36 @@ public class ExcelDBStatement implements Statement {
         }
 
         return fixedQuery;
+    }
+
+    private static void fixBinaryExpression(BinaryExpression binaryExpression) {
+        Expression leftExpression = binaryExpression.getLeftExpression();
+        if (leftExpression instanceof Column) {
+            Column column = (Column) leftExpression;
+            column.setColumnName('\"' + column.getColumnName() + '\"');
+        } else if (leftExpression instanceof ComparisonOperator) {
+            fixComparisonOperator((ComparisonOperator)leftExpression);
+        }
+        
+        Expression rightExpression = binaryExpression.getRightExpression();
+        if (rightExpression instanceof Column) {
+            Column column = (Column) rightExpression;
+            column.setColumnName('\'' + column.getColumnName() + '\'');
+        } else if (rightExpression instanceof ComparisonOperator) {
+            fixComparisonOperator((ComparisonOperator)rightExpression);
+        }
+    }
+    
+    private static void fixComparisonOperator(ComparisonOperator comparisonOperator) {
+        Expression leftExpression = comparisonOperator.getLeftExpression();
+        if (leftExpression instanceof Column) {
+            Column column = (Column) leftExpression;
+            column.setColumnName('\"' + column.getColumnName() + '\"');
+        }
+        Expression rightExpression = comparisonOperator.getRightExpression();
+        if (rightExpression instanceof Column) {
+            Column column = (Column) rightExpression;
+            column.setColumnName('\'' + column.getColumnName() + '\'');
+        }
     }
 }
