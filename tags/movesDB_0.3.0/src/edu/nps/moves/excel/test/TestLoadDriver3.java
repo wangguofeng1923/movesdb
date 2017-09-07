@@ -139,6 +139,7 @@ public class TestLoadDriver3 {
         rs.close();
 
         query = "SELECT * FROM Sheet2 WHERE Column_2 < 4";
+        System.out.println(ExcelDBStatement.fixQuery(query));
         rs = statement.executeQuery(query);
         rsmd = rs.getMetaData();
         System.out.println("Just Column_2 < 4:");
@@ -175,12 +176,11 @@ public class TestLoadDriver3 {
 //            System.out.println();
 //        }
 //if (true) return;
-//        query = "SELECT * FROM Sheet1 WHERE Sheet1.One = Sheet2.id";
-        query = "SELECT * FROM Sheet1 INNER JOIN Sheet2 ON Sheet1.One = Sheet2.id";
+        query = "SELECT * FROM Sheet1, Sheet2 WHERE Sheet1.One = Sheet2.id";
+//        query = "SELECT * FROM Sheet1 INNER JOIN Sheet2 ON Sheet1.One = Sheet2.id";
         System.out.println(ExcelDBStatement.fixQuery(query));
         rs = statement.executeQuery(query);
         rsmd = rs.getMetaData();
-        System.out.println("Trying another WHERE...:");
         while (rs.next()) {
             for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
                 System.out.print(rs.getObject(column) + "\t");
@@ -189,12 +189,13 @@ public class TestLoadDriver3 {
         }
         rs.close();
 
-        query = "SELECT * FROM Sheet1 INNER JOIN Sheet2 ON Sheet1.One = Sheet2.id "
+//        query = "SELECT * FROM Sheet1 INNER JOIN Sheet2 ON Sheet1.One = Sheet2.id "
+//                + "AND Sheet1.Two = Sheet2.Column_3";
+        query = "SELECT One, Two, Three, Four FROM Sheet1, Sheet2 WHERE Sheet1.One = Sheet2.id "
                 + "AND Sheet1.Two = Sheet2.Column_3";
         System.out.println(ExcelDBStatement.fixQuery(query));
         rs = statement.executeQuery(query);
         rsmd = rs.getMetaData();
-        System.out.println("Trying another WHERE...:");
         while (rs.next()) {
             for (int column = 1; column <= rsmd.getColumnCount(); ++column) {
                 System.out.print(rs.getObject(column) + "\t");
