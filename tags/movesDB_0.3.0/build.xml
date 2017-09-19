@@ -48,15 +48,15 @@
    </target>
    
    <target name="package" depends="clean,jar,clean-dist-files">
-       <zip destfile="movesDB-${version}.zip">
+       <zip destfile="${dist.dir}/movesDB-${version}.zip">
            <fileset dir="${dist.dir}" />
        </zip>
-       <tar destfile="./movesDB-${version}.tar">
+       <tar destfile="${dist.dir}/movesDB-${version}.tar">
            <fileset dir="${dist.dir}" />
        </tar>
-       <gzip src="./movesDB-${version}.tar" destfile="movesDB-${version}.tar.gz" />
-       <bzip2 src="./movesDB-${version}.tar" destfile="movesDB-${version}.tar.bz2" />
-       <delete file="./movesDB-${version}.tar" />
+       <gzip src="${dist.dir}/movesDB-${version}.tar" destfile="${dist.dir}/movesDB-${version}.tar.gz" />
+       <bzip2 src="${dist.dir}/movesDB-${version}.tar" destfile="${dist.dir}/movesDB-${version}.tar.bz2" />
+       <delete file="${dist.dir}/movesDB-${version}.tar" />
    </target>
    
    <target name="clean-dist-files">
